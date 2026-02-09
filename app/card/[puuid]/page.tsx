@@ -81,11 +81,24 @@ export default function CardPage({ params }: { params: Promise<{ puuid: string }
     }
   }, [bio, cardUrl, puuid]);
 
-  const handleGenerateCard = () => {
+  const isAdmin = session?.user?.email === 'hyunlee020305@gmail.com';
+
+  const handleGenerateCard = async () => {
     if (!playerStats) return;
 
     if (!session?.user) {
       signIn('google');
+      return;
+    }
+
+    if (isAdmin) {
+      const newBio = await generateBio(playerStats, 'en');
+      if (newBio) {
+        const newCardUrl = await generateCard({ playerStats, bio: newBio, language: 'en' });
+        if (newCardUrl) {
+          sessionStorage.setItem(`cardData:${puuid}`, JSON.stringify({ bio: newBio, cardUrl: newCardUrl }));
+        }
+      }
       return;
     }
 
@@ -152,7 +165,7 @@ export default function CardPage({ params }: { params: Promise<{ puuid: string }
             onClick={handleGenerateCard}
             loading={bioLoading || cardLoading}
           >
-            {hasCard ? 'Regenerate ($1)' : 'Generate Card ($1)'}
+            {hasCard ? (isAdmin ? 'Regenerate' : 'Regenerate ($1)') : (isAdmin ? 'Generate Card' : 'Generate Card ($1)')}
           </Button>
         </div>
 
@@ -188,7 +201,7 @@ export default function CardPage({ params }: { params: Promise<{ puuid: string }
               AI will analyze your stats and generate a unique profile card.
             </p>
             <Button onClick={handleGenerateCard}>
-              Generate Card — $1.00
+              {isAdmin ? 'Generate Card' : 'Generate Card — $1.00'}
             </Button>
           </div>
         )}
