@@ -81,7 +81,7 @@ export default function CardPage({ params }: { params: Promise<{ puuid: string }
     }
   }, [bio, cardUrl, puuid]);
 
-  const isAdmin = session?.user?.email === 'hyunlee020305@gmail.com';
+  const isAdmin = session?.user?.email === '02hyunkyu02@gmail.com';
 
   const handleGenerateCard = async () => {
     if (!playerStats) return;
