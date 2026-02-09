@@ -1,7 +1,7 @@
 import type { NextConfig } from "next";
 
 const nextConfig: NextConfig = {
-  serverExternalPackages: ['@resvg/resvg-js', 'sharp'],
+  serverExternalPackages: ['@resvg/resvg-js', 'sharp', '@libsql/client'],
   images: {
     remotePatterns: [
       { protocol: 'https', hostname: 'media.valorant-api.com' },

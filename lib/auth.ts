@@ -29,6 +29,11 @@ export const { handlers, auth, signIn, signOut } = NextAuth({
       return session;
     },
   },
+  logger: {
+    error(code, ...message) {
+      console.error('[AUTH ERROR]', code, JSON.stringify(message, null, 2));
+    },
+  },
   pages: {
     signIn: '/search',
   },
